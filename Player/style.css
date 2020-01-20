@@ -1,0 +1,61 @@
+body{ 
+	margin:0; 
+	font:normal 75% Arial, Helvetica, sans-serif;
+	background-color: #0c0d0d; 
+}
+
+canvas{ 
+	display: block; 
+	vertical-align: bottom; 
+} 
+
+#particles-js{ 
+	position: absolute; 
+	width: 100%; 
+	height: 60%; 
+	background-color: #0c0d0e;
+	z-index: -1000;
+
+} 
+
+.writeup{
+    position: absolute;
+    color: #fff;
+    font-family:'Gayathri', sans-serif;
+    padding-top: 35%;
+    text-align: left;
+    padding-left: 30%;
+    
+}
+.top{
+	position: absolute;
+    color: #fff;
+    font-family:'Gayathri', sans-serif;
+    padding: 2% 25% 0 25%;
+    width: 50%;
+    height: 60%;
+    z-index: 1000;
+    padding-bottom: 2px;
+
+}
+
+a {
+    color: #fff;
+}
+code {
+    font-size: 15px;
+
+}
+pre {
+    font-size: 12px;
+}
+h3{
+	font-size: 18px
+}
+
+h4{
+	font-size: 15px
+}
+li {
+	font-size: 15px
+}
